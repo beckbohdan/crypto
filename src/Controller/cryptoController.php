@@ -9,20 +9,20 @@ use Drupal\Core\Controller\ControllerBase;
 class cryptoController extends ControllerBase{
 	public function cryptoApi(){
 		$content = "";
-		$coin = crypto_get_api();
+		$coin_ = crypto_get_api();
 
 		$header = array(
 					array('data'=>t("Назва")),
-					array('data'=>t("Капіталізація")),
 					array('data'=>t("Ціна")),
-					array('data'=>t("Обсяг(доба)")),
+					array('data'=>t("Обсяг за добу")),
+					array('data'=>t("Капіталізація")),
 					array('data'=>t("Зворотня пропозиція")),
-					array('data'=>t('Зміна(доба)')),
+					array('data'=>t("Зміна за добу")),
 			);
-			$rowArr = [];
-			if(!empty($coin['currency'])){
-				foreach($coin['currency'] as $cur){
-					$rowArrCr =[];
+			$rowsArr = [];
+			if(!empty($coin_['currency'])){
+				foreach($coin_['currency'] as $cur){
+					$rowsArrCr =[];
 					foreach($cur as $code=>$value_){
 						if(!in_array($code,["name","market_cap_usd","price_usd","24h_volume_usd","total_supply","percent_change_24h"])) continue;
 						switch($code){
@@ -44,22 +44,21 @@ class cryptoController extends ControllerBase{
                             	$value_ = '<span class="nameCurrency">'.$value_.'</span>';
                             	break;                    
 						}
-						$rowArrCr['date_'.$code] = ['data'] => ['data' => ['#markup'] => $value_]];
+						$rowsArrCr['date_'.$code] = ['data'] => ['data' => ['#markup'] => $value_]];
 					}
-					$rowArr[] = $rowArrCr;
+					$rowsArr[] = $rowsArrCr;
 				}
 			}
 			$table = array(
 					'#type' => 'table',
 					'#header' => $header,
-					'#rows' => $rowArr,
-					'#attributes'=> array (
-									'id' => 'crypto-modules-table-content',
+					'#rows' => $rowsArr,
+					'#attributes'=> array ('id' => 'crypto-modules-table-content',
 					),
 			);
 			$content .= drupal_render($table);
 			$output = array();
-			$output['title'] = t('Криптовалюти')."станом на ".("d/m/Y H:i",$coin_['date']);
+			$output['#title'] = t('Криптовалюти')."станом на ".("d/m/Y H:i",$coin_['date']);
 			$output['#markup'] = $content;
 			$output['#attached']['library'][]='crypto/crypto_css';
 			return $output;
