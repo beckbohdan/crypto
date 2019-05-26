@@ -1,0 +1,30 @@
+.Down{
+	font-size: 18px; 
+	color:#990000;
+}
+.Up{
+	font-size: 18px;
+	color: #006600;
+}
+.currence_date{
+	font-size: 12px;
+	font-weight: bolder;
+}
+.currency_title{
+	font-size: 12px;
+}
+.currency_description{
+	font-size: 12px;
+	font-weight: bold;
+}
+.currency_mark{
+	font-size: 11px;
+	color: #999;
+}
+div.header{
+	font-size: 13px;
+	font-weight: bold;
+	margin-bottom: 5px;
+	padding: 4px 2px;
+	border-bottom: #b3b3b3 dashed 1px;
+}
