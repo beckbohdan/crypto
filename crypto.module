@@ -1,0 +1,47 @@
+<?php
+use Drupal\Core\Url;
+use Drupal\Core\Cache\Cache;
+
+
+function crypto_preprocess_block(&$variables) {
+  
+
+//Json  return
+function crypto_parser_return(){
+    $coin_arr_ = NULL;
+    $str = file_get_contents('https://api.coinmarketcap.com/v1/ticker/?limit=100');
+    if($str ===  FALSE){
+       
+        return FALSE;
+    }
+    $coin_arr_ = ["date"=>time(), 'oll'=> "<div class='crypto_all'><a href='/crypto'>".t("View All")."</a></div>", "currency"=>json_decode($str, true)];
+    return $coin_arr_;
+}
+
+/**/
+function crypto_get_api($ignore_cache = FALSE){
+    $cid = 'crypto_get_api:'.\Drupal::languageManager()->getCurrentLanguage()->getId();
+    $coin_arr_ = NULL;
+    if (!$ignore_cache && $cache = \Drupal::cache()->get($cid)) {
+        $coin_arr_ = $cache->data;
+    }else{
+        $coin_arr_ = crypto_parser_return();
+        if($coin_arr_){ 
+            file_put_contents(dirname(__FILE__)."/src/crypto_get.txt", serialize($coin_arr_));
+            \Drupal::cache()->set($cid, $coin_arr_);
+        }else{
+            $coin_arr_ = unserialize(file_get_contents(dirname(__FILE__)."/src/crypto_get.txt"));
+        }
+    }
+    return $coin_arr_;
+}
+
+//hook_cron() every 1 hour
+function crypto_cron() {
+    
+   if ((REQUEST_TIME - \Drupal::state()->get('system.cron_last')) > 3600) {
+       
+        crypto_get_api(TRUE);
+   }
+}
+    
