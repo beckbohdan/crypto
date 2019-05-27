@@ -3,4 +3,4 @@ crypto.cryptoApi:
 	defaults:
 	  _controller: '\Drupal\crypto\Controller\cryptoController::cryptoApi'
 	requirements:
-    _access: 'TRUE'
+    _access: 'access content'
