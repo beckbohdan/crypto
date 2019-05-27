@@ -1,6 +1,6 @@
 crypto.cryptoApi:
-	path: '/crypto'
-	defaults:
-	  _controller: '\Drupal\crypto\Controller\cryptoController::cryptoApi'
-	requirements:
-    _access: 'access content'
+  path: '/crypto'
+  defaults:
+    _controller: '\Drupal\crypto\Controller\cryptoController::cryptoApi'
+  requirements:
+    _permission: 'access content'
